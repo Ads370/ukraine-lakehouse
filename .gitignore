@@ -1,0 +1,18 @@
+# secrets
+.env
+
+# lakehouse data — do NOT commit (respect ACLED terms; don't redistribute data)
+lakehouse/bronze/*
+lakehouse/silver/*
+lakehouse/gold/*
+!lakehouse/*/.gitkeep
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# os
+.DS_Store
