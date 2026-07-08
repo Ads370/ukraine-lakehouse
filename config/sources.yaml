@@ -13,6 +13,10 @@ acled:
   start_date: "2022-02-24"       # full-scale invasion onward; widen if you like
   page_limit: 5000               # rows per page
 
+boundaries:
+  # HDX geoBoundaries Ukraine ADM1 (oblast) polygons — reference data, committed
+  adm1_path: "config/boundaries/geoBoundaries-UKR-ADM1.geojson"
+
 firms:
   base_url: "https://firms.modaps.eosdis.nasa.gov/api/area/csv"
   # sensors to pull; VIIRS gives the best spatial resolution for this use

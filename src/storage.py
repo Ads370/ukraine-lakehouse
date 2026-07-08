@@ -50,6 +50,22 @@ def write_bronze(df: pd.DataFrame, table: str, source: str) -> str:
     return path
 
 
+def write_silver(df: pd.DataFrame, table: str) -> str:
+    """
+    Write a silver (or gold) table by overwrite.
+
+    Silver is *derived* from bronze, so we rebuild it wholesale each run
+    rather than appending. Delta keeps the previous version for time travel.
+    """
+    now = datetime.now(timezone.utc)
+    df = df.copy()
+    df["_built_at"] = now.isoformat()
+    path = _table_path("silver", table)
+    write_deltalake(path, df, mode="overwrite", schema_mode="overwrite")
+    print(f"[silver:{table}] wrote {len(df)} rows -> {path}")
+    return path
+
+
 def read_delta(layer: str, table: str) -> pd.DataFrame:
     """Read a whole Delta table into pandas (fine at local scale)."""
     path = _table_path(layer, table)
