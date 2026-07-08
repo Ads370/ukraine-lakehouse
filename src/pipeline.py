@@ -12,9 +12,14 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent))
 from ingest import acled, firms  # noqa: E402
-from transform import silver  # noqa: E402
+from transform import gold, silver  # noqa: E402
 
-STEPS = {"acled": acled.run, "firms": firms.run, "silver": silver.run}
+STEPS = {
+    "acled": acled.run,
+    "firms": firms.run,
+    "silver": silver.run,
+    "gold": gold.run,
+}
 
 
 def main(argv: list[str]) -> None:

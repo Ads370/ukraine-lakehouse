@@ -19,6 +19,10 @@ boundaries:
 
 firms:
   base_url: "https://firms.modaps.eosdis.nasa.gov/api/area/csv"
-  # sensors to pull; VIIRS gives the best spatial resolution for this use
-  sources: ["VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT"]
-  day_range: 1                   # NRT: 1 = most recent day (max 10 per call)
+  # Standard Processing (SP) archive sources — required for data older than
+  # ~2 months. For live/recent pulls, swap to the _NRT variants.
+  sources: ["VIIRS_SNPP_SP", "VIIRS_NOAA20_SP"]
+  # Backfill window chosen to overlap ACLED Research-tier coverage (~12mo lag).
+  backfill_start: "2025-06-01"
+  backfill_days: 30
+  chunk_days: 5                  # area API max is 5 days per call

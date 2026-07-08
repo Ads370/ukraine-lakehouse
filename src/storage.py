@@ -51,18 +51,28 @@ def write_bronze(df: pd.DataFrame, table: str, source: str) -> str:
 
 
 def write_silver(df: pd.DataFrame, table: str) -> str:
-    """
-    Write a silver (or gold) table by overwrite.
+    """Write a silver table by overwrite (derived from bronze)."""
+    return _write_derived(df, "silver", table)
 
-    Silver is *derived* from bronze, so we rebuild it wholesale each run
-    rather than appending. Delta keeps the previous version for time travel.
+
+def write_gold(df: pd.DataFrame, table: str) -> str:
+    """Write a gold table by overwrite (derived from silver)."""
+    return _write_derived(df, "gold", table)
+
+
+def _write_derived(df: pd.DataFrame, layer: str, table: str) -> str:
+    """
+    Write a derived (silver/gold) table by overwrite.
+
+    Derived layers are rebuilt wholesale each run rather than appended.
+    Delta keeps the previous version for time travel.
     """
     now = datetime.now(timezone.utc)
     df = df.copy()
     df["_built_at"] = now.isoformat()
-    path = _table_path("silver", table)
+    path = _table_path(layer, table)
     write_deltalake(path, df, mode="overwrite", schema_mode="overwrite")
-    print(f"[silver:{table}] wrote {len(df)} rows -> {path}")
+    print(f"[{layer}:{table}] wrote {len(df)} rows -> {path}")
     return path
 
 
