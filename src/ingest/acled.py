@@ -1,9 +1,8 @@
 """
-ingest/acled.py — pull ACLED events for Ukraine into the bronze layer.
-
+ingest/acled.py: pull ACLED events for Ukraine into the bronze layer.
 ACLED requires a free myACLED account. Programmatic access uses OAuth:
 POST credentials to the token endpoint, then send the bearer token on reads.
-Tokens last 24h. Attribution is mandatory — cite ACLED in your README.
+Tokens last 24h. Attribution is mandatory.
 """
 from __future__ import annotations
 
