@@ -1,10 +1,9 @@
 """
-scripts/smoke_test.py — prove the lakehouse skeleton works end to end
+scripts/smoke_test.py: prove the lakehouse skeleton works end to end
 WITHOUT any API credentials.
-
 Writes synthetic ACLED-shaped rows to bronze twice, then reads them back
-with DuckDB and shows Delta time-travel history. If this runs clean, your
-storage layer is good and you can move on to real ingestion.
+with DuckDB and shows Delta time-travel history. If this runs clean, the
+storage layer is good and its possible to move on to real ingestion.
 
     python scripts/smoke_test.py
 """

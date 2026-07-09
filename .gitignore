@@ -1,7 +1,7 @@
 # secrets
 .env
 
-# lakehouse data — do NOT commit (respect ACLED terms; don't redistribute data)
+# lakehouse data —> do NOT commit (ACLED terms need to be respected; don't redistribute data)
 lakehouse/bronze/*
 lakehouse/silver/*
 lakehouse/gold/*

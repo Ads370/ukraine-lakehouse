@@ -1,20 +1,17 @@
 """
-ingest/firms.py — pull NASA FIRMS active-fire detections over Ukraine.
-
+ingest/firms.py: pull NASA FIRMS active-fire detections over Ukraine.
 Free MAP_KEY required (firms.modaps.eosdis.nasa.gov/api/map_key).
-
 Area endpoint:
   {base}/{MAP_KEY}/{SOURCE}/{west,south,east,north}/{day_range}[/{start_date}]
-  -> returns detections for [start_date .. start_date + day_range - 1]
+    returns detections for [start_date .. start_date + day_range - 1]
 
 Two access modes by dataset age:
-  * NRT sources (e.g. VIIRS_SNPP_NRT) — only the last ~2 months.
-  * SP  sources (e.g. VIIRS_SNPP_SP)  — Standard Processing archive, older data.
-For a 2025 backfill we use the SP sources. DAY_RANGE maxes at 5 per call,
+  * NRT sources (e.g. VIIRS_SNPP_NRT): only the last ~2 months.
+  * SP  sources (e.g. VIIRS_SNPP_SP): Standard Processing archive, older data.
+For a 2025 backfill, the SP sources is being used. DAY_RANGE maxes at 5 per call,
 so a month is tiled into 5-day chunks.
-
-VIIRS thermal signatures are a *proxy* for events (fires can be agricultural
-or wildfire) — document that honestly; this is not a strike detector.
+VIIRS thermal signatures are a proxy for events (fires can be agricultural
+or wildfire). This is not a strike detector.
 """
 from __future__ import annotations
 

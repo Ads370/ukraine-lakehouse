@@ -1,12 +1,11 @@
 """
-transform/spatial.py — point-in-polygon assignment of oblast to lat/lon rows.
-
+transform/spatial.py: point-in-polygon assignment of oblast to lat/lon rows.
 Uses shapely's STRtree for a fast vectorised spatial index. Reads the HDX
-geoBoundaries ADM1 GeoJSON directly (stdlib json — no GDAL needed).
+geoBoundaries ADM1 GeoJSON directly (stdlib json, no GDAL needed).
 
 Note on shapely's STRtree.query: the predicate is applied from the INPUT
-geometry's side, i.e. point.intersects(polygon). That's why we use
-'intersects' (from the point) rather than 'covers' (from the polygon).
+geometry's side, i.e. point.intersects(polygon). That's why
+'intersects' (from the point) it's used rather than 'covers' (from the polygon).
 """
 from __future__ import annotations
 

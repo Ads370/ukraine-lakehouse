@@ -1,4 +1,4 @@
-# Ukraine Conflict Lakehouse — source configuration
+# Ukraine Conflict Lakehouse: source configuration
 # Edit dates/box here; keep secrets in .env
 
 region:
@@ -9,17 +9,17 @@ region:
 acled:
   base_url: "https://acleddata.com/api/acled/read"
   oauth_url: "https://acleddata.com/oauth/token"
-  countries: ["Ukraine"]        # add "Russia" if you want cross-border events
-  start_date: "2022-02-24"       # full-scale invasion onward; widen if you like
+  countries: ["Ukraine"]        # add "Russia" if cross-border events are wanted
+  start_date: "2022-02-24"       # full-scale invasion onward; can widen if wanted
   page_limit: 5000               # rows per page
 
 boundaries:
-  # HDX geoBoundaries Ukraine ADM1 (oblast) polygons — reference data, committed
+  # HDX geoBoundaries Ukraine ADM1 (oblast) polygons: reference data, committed
   adm1_path: "config/boundaries/geoBoundaries-UKR-ADM1.geojson"
 
 firms:
   base_url: "https://firms.modaps.eosdis.nasa.gov/api/area/csv"
-  # Standard Processing (SP) archive sources — required for data older than
+  # Standard Processing (SP) archive sources, required for data older than
   # ~2 months. For live/recent pulls, swap to the _NRT variants.
   sources: ["VIIRS_SNPP_SP", "VIIRS_NOAA20_SP"]
   # Backfill window chosen to overlap ACLED Research-tier coverage (~12mo lag).
