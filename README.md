@@ -78,10 +78,10 @@ Result: two clean tables sharing a single `oblast_name` / `oblast_pcode` key.
 
 ## Key results
 
-- **80.3% corroboration rate** — of 386 oblast-days with a reported event in June 2025, 310 also showed a fire detection in the same oblast.
+- **80.3% corroboration rate**: of 386 oblast-days with a reported event in June 2025, 310 also showed a fire detection in the same oblast.
 - **Strong on the front line:** Donetsk, Zaporizhia, and Dnipropetrovsk corroborate at ~100% — dense combat reliably coincides with thermal signatures.
 - **Weak / misleading in agrarian oblasts:** Kherson shows far more detections than events (agricultural fires along the Dnipro), so its high rate reflects near-daily farming fires as much as conflict.
-- **Weak individual-level correlation:** events explain only ~29% of the variance in detections (R² = 0.29, log-log). Fires and fighting track loosely, not tightly — which is the honest, expected result given the proxy's noise.
+- **Weak individual-level correlation:** events explain only ~29% of the variance in detections (R² = 0.29, log-log). Fires and fighting track loosely, not tightly, which is the honest and expected result given the proxy's noise.
 
 **Interpretation.** These findings support *spatial-temporal association* between reported conflict and satellite-detected fires in high-intensity regions, while demonstrating that thermal data alone is an unreliable conflict indicator in agrarian areas. This is not evidence that any specific fire corresponds to any specific event.
 
@@ -89,15 +89,15 @@ Result: two clean tables sharing a single `oblast_name` / `oblast_pcode` key.
 
 ## Tech stack
 
-Deliberately right-sized for single-machine, local scale — the tools were chosen to fit the data, not to pad a résumé.
+Deliberately right-sized for a single machine at local scale. The tools were chosen to fit the data.
 
-- **Storage / tables:** [Delta Lake](https://delta.io) via `deltalake` (delta-rs) — ACID, schema enforcement, time travel, **no JVM**.
+- **Storage / tables:** [Delta Lake](https://delta.io) via `deltalake` (delta-rs): ACID, schema enforcement, time travel, **no JVM**.
 - **Query / transform:** [DuckDB](https://duckdb.org) + pandas.
-- **Spatial join:** [shapely](https://shapely.readthedocs.io) `STRtree` — point-in-polygon without GDAL.
+- **Spatial join:** [shapely](https://shapely.readthedocs.io) `STRtree`: point-in-polygon without GDAL.
 - **Visualization:** Tableau Public.
 - **Orchestration:** plain Python entrypoint (cron-ready). Prefect/Dagster noted as future work.
 
-Spark and Airflow were considered and **rejected** — at this data volume they add operational overhead (JVM, a scheduler to maintain) for no benefit. DuckDB + delta-rs deliver Delta tables and SQL with none of that friction.
+Spark and Airflow were considered and **rejected**. At this data volume they add operational overhead (JVM, a scheduler to maintain) for no benefit. DuckDB + delta-rs deliver Delta tables and SQL with none of that friction.
 
 ---
 
@@ -151,7 +151,7 @@ ukraine-conflict-lakehouse/
 ## Limitations & honest caveats
 
 - **Association, not causation.** An oblast is large; a shelling event in one town and a field fire 80 km away both register as "corroborated" on a given day.
-- **Retrospective, not live** — a consequence of the ACLED Research-tier 12-month lag.
+- **Retrospective, not live**, a consequence of the ACLED Research-tier 12-month lag.
 - **Agricultural contamination** of the thermal signal, seasonally worst in June.
 - **Fatality figures are ACLED estimates** and are the least reliable field.
 - Corroboration is measured at oblast-day grain; finer spatial or temporal matching would tighten (or weaken) the association and is left as future work.
@@ -161,7 +161,7 @@ ukraine-conflict-lakehouse/
 ## Future work
 
 - **Statistical rigor:** confidence intervals on the correlation, spatial-lag testing, temporal cross-correlation (do fires lag shelling?).
-- **Control for agricultural fires** via a land-use layer or seasonal baseline, to isolate conflict-driven detections.
+- **Control for agricultural fires** via a land-use layer or seasonal baseline, to isolate detections driven by conflict.
 - **Automated ingestion:** a Prefect/Dagster + cron scheduler to keep bronze fresh at each source's edge (freshness, not live corroboration — see the ACLED lag).
 - **`src/` module extraction and unit tests** for the transform logic.
 
