@@ -1,7 +1,7 @@
 """
-config.py — loads sources.yaml and secrets from the environment (.env).
+config.py: loads sources.yaml and secrets from the environment (.env).
 
-Never commit real credentials. Copy .env.example to .env and fill it in.
+Never commit real credentials! Copy .env.example to .env and fill it in.
 """
 from __future__ import annotations
 
@@ -24,7 +24,7 @@ FIRMS_MAP_KEY = os.getenv("FIRMS_MAP_KEY", "")
 
 
 def require(*names: str) -> None:
-    """Fail early with a clear message if a needed secret is missing."""
+    """Fails early with a clear message if a needed secret is missing."""
     missing = [n for n in names if not globals().get(n)]
     if missing:
         raise SystemExit(
