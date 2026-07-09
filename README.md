@@ -4,7 +4,7 @@ A local, medallion-architecture data lakehouse that ingests conflict-event and s
 
 **Headline finding:** across June 2025, **80% of oblast-days with a reported conflict event also showed an independent satellite fire detection in the same oblast**, but the relationship is weak at the individual level (R² = 0.29), and in agrarian oblasts (notably Kherson) the thermal signal is dominated by agricultural burning rather than combat. Corroboration is strong evidence of *spatial-temporal association*, not causation.
 
-**Interactive dashboard:** [View on Tableau Public](https://public.tableau.com/app/profile/YOUR_PROFILE/viz/ukraine-dashboard)
+**Interactive dashboard:** [View on Tableau Public]([https://public.tableau.com/app/profile/YOUR_PROFILE/viz/ukraine-dashboard](https://public.tableau.com/shared/YZKW8TPSN?:display_count=n&:origin=viz_share_link)
 
 ---
 
