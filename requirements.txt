@@ -1,4 +1,4 @@
-# Ukraine Conflict Lakehouse — Python dependencies
+# Ukraine Conflict Lakehouse —> Python dependencies
 # Verified working together on Python 3.12 (Apple Silicon wheels available).
 deltalake>=1.6
 duckdb>=1.5
@@ -10,6 +10,6 @@ requests>=2.31
 pyyaml>=6.0
 python-dotenv>=1.0
 
-# Add later, when you get to silver/gold:
+# Add later, when creating silver/gold:
 # polars           # faster transforms if pandas gets slow
 # duckdb spatial extension is installed at runtime, not via pip
