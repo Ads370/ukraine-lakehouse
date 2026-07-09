@@ -1,8 +1,7 @@
 """
-storage.py — thin wrappers over Delta Lake (delta-rs) and DuckDB.
-
+storage.py: thin wrappers over Delta Lake (delta-rs) and DuckDB.
 Bronze is append-only and immutable: every run adds rows tagged with an
-ingest timestamp, partitioned by ingest_date. We never mutate what landed.
+ingest timestamp, partitioned by ingest_date. What lands is never mutated.
 """
 from __future__ import annotations
 
