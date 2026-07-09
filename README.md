@@ -1,17 +1,16 @@
 # Ukraine Conflict Data Lakehouse
 
-A local, medallion-architecture data lakehouse that ingests conflict-event and satellite thermal data on the Russia–Ukraine war, joins them on a shared geographic key, and measures **how well independent satellite fire detections corroborate reported conflict events**. Built end to end with open-source tools — no cloud, no Spark, no JVM.
+A local, medallion-architecture data lakehouse that ingests conflict-event and satellite thermal data on the Russia–Ukraine war (ukrainian territory), joins them on a shared geographic key, and measures **how well independent satellite fire detections corroborate reported conflict events**. Built end to end with open-source tools: no cloud, no Spark, no JVM.
 
-**Headline finding:** across June 2025, **80% of oblast-days with a reported conflict event also showed an independent satellite fire detection in the same oblast** — but the relationship is weak at the individual level (R² = 0.29), and in agrarian oblasts (notably Kherson) the thermal signal is dominated by agricultural burning rather than combat. Corroboration is strong evidence of *spatial-temporal association*, not causation.
+**Headline finding:** across June 2025, **80% of oblast-days with a reported conflict event also showed an independent satellite fire detection in the same oblast**, but the relationship is weak at the individual level (R² = 0.29), and in agrarian oblasts (notably Kherson) the thermal signal is dominated by agricultural burning rather than combat. Corroboration is strong evidence of *spatial-temporal association*, not causation.
 
-<!-- Replace with your published Tableau Public link -->
 **Interactive dashboard:** [View on Tableau Public](https://public.tableau.com/app/profile/YOUR_PROFILE/viz/ukraine-dashboard)
 
 ---
 
 ## Why this project
 
-Most portfolio "data pipeline" projects load a CSV into pandas and call it a lakehouse. This one models a realistic ingest → transform → store → serve workflow on genuinely messy, real-world data, and — more importantly — it asks a question that the engineering exists to answer: *can open satellite data independently corroborate reported conflict activity, and where does that break down?*
+Most portfolio "data pipeline" projects load a CSV into pandas and call it a lakehouse. This one models a realistic ingest → transform → store → serve workflow on genuinely messy, real-world data and, more importantly, it asks a question that the engineering exists to answer: *can open satellite data independently corroborate reported conflict activity, and where does that break down?*
 
 The project deliberately foregrounds its own limitations. Naming where the thermal proxy fails (agricultural fires, urban combat that doesn't ignite, a 12-month data lag) is treated as part of the analysis, not a footnote.
 
@@ -19,7 +18,7 @@ The project deliberately foregrounds its own limitations. Naming where the therm
 
 ## Architecture
 
-A three-layer medallion pipeline. Each layer reads the one before it and never mutates it, so the whole thing is reproducible from raw.
+A three-layer medallion pipeline. Each layer reads the one before it and never mutates it, so the whole structure is reproducible from raw.
 
 ```
    ACLED API            NASA FIRMS API           HDX geoBoundaries
@@ -39,7 +38,7 @@ A three-layer medallion pipeline. Each layer reads the one before it and never m
         CSV export  ->  Tableau Public dashboard
 ```
 
-The join between the two data sources happens **in the pipeline (gold layer)**, not in the BI tool. Tableau only ever visualizes pre-joined, presentation-ready tables — a deliberate separation of concerns.
+The join between the two data sources happens **in the pipeline (gold layer)**, not in the BI tool. Tableau only ever visualizes pre-joined, presentation-ready tables, a deliberate separation of concerns.
 
 ---
 
@@ -51,10 +50,10 @@ The join between the two data sources happens **in the pipeline (gold layer)**, 
 | **NASA FIRMS** | VIIRS active-fire / thermal-anomaly detections | Free MAP_KEY; area API | 13,881 detections, June 2025 (Standard Processing archive) |
 | **HDX geoBoundaries** | Ukraine ADM1 (oblast) boundary polygons | Free download | 27 oblast polygons |
 
-### Important data limitations (read before interpreting results)
+### Important data limitations
 
-- **ACLED Research-tier lag.** The freely available Research tier serves event data on a **rolling ~12-month delay**. Data here ends mid-2025. This is why the project is a **retrospective analysis, not live monitoring** — the event feed and a real-time thermal feed can never temporally overlap on the free tier. The FIRMS window (June 2025) was chosen specifically to sit *inside* ACLED coverage.
-- **FIRMS is a proxy, not a strike detector.** Thermal detections capture *any* fire — agricultural burning, wildfires, industrial heat — not only conflict. June is peak agricultural-burning season in Ukraine, which materially inflates detections in farming oblasts (see Kherson).
+- **ACLED Research-tier lag.** The freely available Research tier serves event data on a **rolling ~12-month delay**. Data here ends mid-2025. This is why the project is a **retrospective analysis, not live monitoring**, the event feed and a real-time thermal feed can never temporally overlap on the free tier. The FIRMS window (June 2025) was chosen specifically to sit *inside* ACLED coverage.
+- **FIRMS is a proxy, not a strike detector.** Thermal detections capture *any* fire (agricultural burning, wildfires, industrial heat) not only conflict. June is peak agricultural-burning season in Ukraine, which materially inflates detections in farming oblasts (see Kherson).
 - **Bounding-box spillover.** FIRMS is queried by a rectangle around Ukraine, so ~24% of raw detections fall outside the national borders (Russia, Belarus, Black Sea). These are correctly assigned a null oblast in silver and excluded from analysis.
 
 ---
@@ -65,10 +64,10 @@ The join between the two data sources happens **in the pipeline (gold layer)**, 
 Immutable, append-only, partitioned by `ingest_date`. Source data stored verbatim (ACLED JSON, FIRMS CSV). This is the audit trail: silver and gold can always be rebuilt from bronze without re-hitting the APIs. Delta Lake provides ACID guarantees and time travel.
 
 ### Silver — cleaned and spatially joined
-The core engineering step. Deduplicates (ACLED on `event_id_cnty`; FIRMS on a composite key), conforms types (real dates, a UTC timestamp assembled from FIRMS `acq_date` + `acq_time`), and — the load-bearing operation — assigns every event and every detection to an oblast via **point-in-polygon** against the ADM1 boundaries (shapely `STRtree`, vectorized).
+The core engineering step. Deduplicates (ACLED on `event_id_cnty`; FIRMS on a composite key), conforms types (real dates, a UTC timestamp assembled from FIRMS `acq_date` + `acq_time`), and assigns every event and every detection to an oblast via **point-in-polygon** against the ADM1 boundaries (shapely `STRtree`, vectorized).
 
 Result: two clean tables sharing a single `oblast_name` / `oblast_pcode` key.
-- **Events:** 0 / 195,764 unmatched — every event fell inside an oblast.
+- **Events:** 0 / 195,764 unmatched: every event fell inside an oblast.
 - **Detections:** 10,548 in-country; the remainder correctly null (bounding-box spillover).
 
 ### Gold — analytics marts
