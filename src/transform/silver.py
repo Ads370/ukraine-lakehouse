@@ -1,6 +1,5 @@
 """
-transform/silver.py — build the silver layer from bronze.
-
+transform/silver.py: build the silver layer from bronze.
 Reads bronze (never mutates it), cleans and deduplicates, stamps every event
 and detection with a shared oblast key via point-in-polygon, and writes two
 conformed Delta tables: silver/events and silver/detections.
