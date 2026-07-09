@@ -14,12 +14,12 @@ acled:
   page_limit: 5000               # rows per page
 
 boundaries:
-  # HDX geoBoundaries Ukraine ADM1 (oblast) polygons — reference data, committed
+  # HDX geoBoundaries Ukraine ADM1 (oblast) polygons: reference data, committed
   adm1_path: "config/boundaries/geoBoundaries-UKR-ADM1.geojson"
 
 firms:
   base_url: "https://firms.modaps.eosdis.nasa.gov/api/area/csv"
-  # Standard Processing (SP) archive sources — required for data older than
+  # Standard Processing (SP) archive sources, required for data older than
   # ~2 months. For live/recent pulls, swap to the _NRT variants.
   sources: ["VIIRS_SNPP_SP", "VIIRS_NOAA20_SP"]
   # Backfill window chosen to overlap ACLED Research-tier coverage (~12mo lag).
