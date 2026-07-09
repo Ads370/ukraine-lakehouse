@@ -1,6 +1,5 @@
 """
-pipeline.py — single entrypoint the scheduler (cron/Prefect) calls.
-
+pipeline.py: single entrypoint the scheduler (cron/Prefect) calls.
 For now it just runs the bronze ingestors. Silver/gold get wired in later.
     python src/pipeline.py            # run all
     python src/pipeline.py acled      # run one
