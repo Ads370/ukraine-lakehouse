@@ -1,16 +1,14 @@
 """
-transform/gold.py — build the gold (analytics-ready) layer from silver.
-
+transform/gold.py: build the gold (analytics-ready) layer from silver.
 Two marts:
   * events_by_oblast_week      — events + fatalities per oblast per ISO week,
                                  full 2022-2025 span. Feeds the intensity heatmap.
   * thermal_event_corroboration — per oblast per day within the FIRMS overlap
                                  window, reported events beside independent
-                                 thermal detections, FULL OUTER JOINed so you
-                                 can measure how often the two coincide.
-
+                                 thermal detections, FULL OUTER JOINed so its possible
+                                 to measure how often the two coincide.
 The corroboration window is derived from the FIRMS backfill config so the two
-stay in sync automatically if you widen the window later.
+stay in sync automatically if the window is widen later on.
 
     python src/pipeline.py gold
 """
